@@ -1,0 +1,26 @@
+version: "2.1"
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.9.3
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:rw
+      - /volume1/docker/es_backup:/var/backups:rw
+      - /volume1/docker/elasticsearch:/usr/share/elasticsearch/data:rw
+
+  logstash:
+    image: logstash:7.9.3
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+      - "514:5140/udp"
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+
+  kibana:
+    image: kibana:7.9.3
+    ports:
+      - "5601:5601"
